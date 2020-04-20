@@ -33,7 +33,7 @@ print(outputs)
 # Load the BERT tokenizer.
 print('Loading BART tokenizer...')
 #tokenizer = BertTokenizer.from_pretrained('bert-base-cased', do_lower_case=False)
-tokenizer = BartTokenizer.from_pretrained("bart-large-cnn")
+tokenizer = BartTokenizer.from_pretrained("facebook/bart-large")
 
 #encode inputs using BERT tokenizer
 input_ids = []
@@ -103,7 +103,7 @@ validation_dataloader = DataLoader(validation_data, sampler=validation_sampler, 
 # Load BertForSequenceClassification, the pretrained BERT model with a single
 # linear classification layer on top.
 model = BertForSequenceClassification.from_pretrained(
-    "bart-large-cnn" # Use the 12-layer BERT model, with an uncased vocab.
+    "facebook/bart-large" # Use the 12-layer BERT model, with an uncased vocab.
 )
 
 # Tell pytorch to run this model on the GPU.
