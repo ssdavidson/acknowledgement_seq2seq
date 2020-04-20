@@ -106,6 +106,9 @@ model = BertForSequenceClassification.from_pretrained(
     "facebook/bart-large" # Use the 12-layer BERT model, with an uncased vocab.
 )
 
+if torch.cuda.device_count() > 1:
+    model = nn.DataParallel(model)
+
 # Tell pytorch to run this model on the GPU.
 model.cuda()
 
