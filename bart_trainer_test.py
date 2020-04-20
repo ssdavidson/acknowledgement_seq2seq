@@ -107,7 +107,7 @@ validation_dataloader = DataLoader(validation_data, sampler=validation_sampler, 
 
 # Load BertForSequenceClassification, the pretrained BERT model with a single
 # linear classification layer on top.
-model = BertForSequenceClassification.from_pretrained(
+model = BartForConditionalGeneration.from_pretrained(
     "facebook/bart-large" # Use the 12-layer BERT model, with an uncased vocab.
 )
 
