@@ -1,6 +1,6 @@
 from transformers import BartTokenizer, BartForConditionalGeneration, BartConfig
 import load_data_test as load_data
-import torch
+import torch, sys
 from tqdm import tqdm
 
 # If there's a GPU available...
@@ -21,6 +21,8 @@ else:
 #load comments and labels from the input tsv
 inputs, outputs = load_data.get_data(sys.argv[1])
 
+print(outputs)
+
 # Load the BERT tokenizer.
 print('Loading BART tokenizer...')
 #tokenizer = BertTokenizer.from_pretrained('bert-base-cased', do_lower_case=False)
@@ -30,8 +32,8 @@ tokenizer = BartTokenizer.from_pretrained("bart-large")
 input_ids = []
 output_ids = []
 
-for input, output in zip(inputs, outputs):
-    encoded_input = tokenizer.encode(input, add_special_tokens = True, max_length=256,pad_to_max_length=True)
+for in_data, output in zip(inputs, outputs):
+    encoded_input = tokenizer.encode(in_data, add_special_tokens = True, max_length=256,pad_to_max_length=True)
     encoded_output = tokenizer.encode(output, add_special_tokens = True, max_length=256,pad_to_max_length=True)
     input_ids.append(encoded_input)
     output_ids.append(encoded_output)
