@@ -78,11 +78,11 @@ train_masks, validation_masks, _, _ = train_test_split(attention_masks, output_i
 # Convert all inputs and labels into torch tensors, the required datatype
 # for our model.
 train_inputs = torch.tensor(train_inputs)
-print("input: ", train_inputs.shape())
+print("input: ", train_inputs.shape)
 validation_inputs = torch.tensor(validation_inputs)
 
 train_outputs = torch.tensor(train_outputs)
-print("output: ", train_outputs.shape())
+print("output: ", train_outputs.shape)
 validation_outputs = torch.tensor(validation_outputs)
 
 train_masks = torch.tensor(train_masks)
