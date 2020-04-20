@@ -225,9 +225,8 @@ for epoch_i in range(0, epochs):
         # The documentation for this `model` function is here:
         # https://huggingface.co/transformers/v2.2.0/model_doc/bert.html#transformers.BertForSequenceClassification
         outputs = model(b_input_ids,
-                    token_type_ids=None,
                     attention_mask=b_input_mask,
-                    labels=b_output_ids)
+                    masked_lm_labels=b_output_ids)
 
         # The call to `model` always returns a tuple, so we need to pull the
         # loss value out of the tuple.
