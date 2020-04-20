@@ -31,6 +31,8 @@ inputs, outputs = load_data.get_data(sys.argv[1])
 
 print(outputs)
 
+print(inputs)
+
 # Load the BERT tokenizer.
 print('Loading BART tokenizer...')
 #tokenizer = BertTokenizer.from_pretrained('bert-base-cased', do_lower_case=False)
