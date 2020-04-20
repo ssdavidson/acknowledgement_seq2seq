@@ -9,6 +9,7 @@ from torch.utils.data import TensorDataset, DataLoader, RandomSampler, Sequentia
 from transformers import BertForSequenceClassification, AdamW, BertConfig
 from transformers import get_linear_schedule_with_warmup
 import numpy as np
+import torch.nn as nn
 
 # If there's a GPU available...
 if torch.cuda.is_available():
