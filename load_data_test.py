@@ -2,7 +2,7 @@
 import pandas as pd
 
 def get_data(tsv_file):
-    df = pd.read_csv(tsv_file, delimiter='\t', names=['input', 'output'])
+    df = pd.read_csv(tsv_file, delimiter='\t', names=['input', 'output', 'code'], header=None)
     df = df[1:]
     outputs = df.output.values
     inputs = df.input.values
