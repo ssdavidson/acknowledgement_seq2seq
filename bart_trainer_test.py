@@ -33,7 +33,7 @@ print(outputs)
 # Load the BERT tokenizer.
 print('Loading BART tokenizer...')
 #tokenizer = BertTokenizer.from_pretrained('bert-base-cased', do_lower_case=False)
-tokenizer = BartTokenizer.from_pretrained("facebook/bart-large")
+tokenizer = BartTokenizer.from_pretrained("bart-large")
 
 #encode inputs using BERT tokenizer
 input_ids = []
