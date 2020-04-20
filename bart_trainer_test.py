@@ -10,6 +10,7 @@ from transformers import BertForSequenceClassification, AdamW, BertConfig
 from transformers import get_linear_schedule_with_warmup
 import numpy as np
 import torch.nn as nn
+import torch.nn.functional as F
 
 # If there's a GPU available...
 if torch.cuda.is_available():
@@ -187,6 +188,9 @@ for epoch_i in range(0, epochs):
     # vs. test (source: https://stackoverflow.com/questions/51433378/what-does-model-train-do-in-pytorch)
     model.train()
 
+    loss_function = nn.CrossEntropyLoss(ignore_index=0)
+    pad_id = tokenizer.convert_tokens_to_ids('<PAD>')
+
     # For each batch of training data...
     for step, batch in enumerate(train_dataloader):
 
@@ -224,19 +228,18 @@ for epoch_i in range(0, epochs):
         # have provided the `labels`.
         # The documentation for this `model` function is here:
         # https://huggingface.co/transformers/v2.2.0/model_doc/bert.html#transformers.BertForSequenceClassification
-        outputs = model(b_input_ids,
-                    attention_mask=b_input_mask,
-                    lm_labels=b_output_ids)
+        batch_outputs = model(b_input_ids,
+                    attention_mask=b_input_mask)
 
         # The call to `model` always returns a tuple, so we need to pull the
         # loss value out of the tuple.
-        loss = outputs[0]
+        loss = loss_fuction(batch_outputs, b_input_ids, ignore_index=pad_id)
 
         # Accumulate the training loss over all of the batches so that we can
         # calculate the average loss at the end. `loss` is a Tensor containing a
         # single value; the `.item()` function just returns the Python value
         # from the tensor.
-        total_loss += loss.item()
+        total_loss += loss
 
         # Perform a backward pass to calculate the gradients.
         loss.backward()
