@@ -227,8 +227,9 @@ for epoch_i in range(0, epochs):
         batch_outputs = model(b_input_ids,
                     attention_mask=b_input_mask)
 
-        print("Batch_outputs:", batch_outputs[0].shape)
-        print("Target:", b_output_ids.shape)
+        print("Batch_outputs: ", batch_outputs[0].shape)
+        print("Target: ", b_output_ids.shape)
+        print("Vocab: ", tokenizer.vocab_size)
 
         # The call to `model` always returns a tuple, so we need to pull the
         # loss value out of the tuple.
@@ -246,7 +247,7 @@ for epoch_i in range(0, epochs):
         loss.backward()
 
         # Clip the norm of the gradients to 1.0.
-        # This is to help prevent the "exploding gradients" problem.
+        # This is to help preveent the "exploding gradients" problem.
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
 
         # Update parameters and take a step using the computed gradient.
