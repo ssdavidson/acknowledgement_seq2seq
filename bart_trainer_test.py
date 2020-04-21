@@ -181,7 +181,7 @@ for epoch_i in range(0, epochs):
 
     # Reset the total loss for this epoch.
     total_loss = 0
-    loss_func = nn.CrossEntropyLoss(ignore_index=pad_id)
+    loss_func = nn.CrossEntropyLoss(ignore_index=tokenizer.pad_token_id)
 
     # Put the model into training mode. Don't be mislead--the call to
     # `train` just changes the *mode*, it doesn't *perform* the training.
@@ -231,7 +231,6 @@ for epoch_i in range(0, epochs):
 
         # The call to `model` always returns a tuple, so we need to pull the
         # loss value out of the tuple.
-        loss_func = nn.CrossEntropyLoss(ignore_index=tokenizer.pad_token_id)
 
         loss = loss_func(batch_outputs, b_output_ids)
 
