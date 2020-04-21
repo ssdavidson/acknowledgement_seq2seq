@@ -63,7 +63,7 @@ def run_generate():
         "--bs", type=int, default=8, required=False, help="batch size: how many to summarize at a time",
     )
     args = parser.parse_args()
-    tsv_in = csv.reader(args.source_path, delimiter = '\t')
+    tsv_in = csv.reader(open(args.source_path), delimiter = '\t')
     examples = [" " + row[0].rstrip() for row in tsv_in]
     print(examples)
     generate_summaries(examples, args.output_path, args.model_name, batch_size=args.bs, device=args.device)
