@@ -232,7 +232,7 @@ for epoch_i in range(0, epochs):
         # The call to `model` always returns a tuple, so we need to pull the
         # loss value out of the tuple.
 
-        loss = loss_func(batch_outputs, b_output_ids)
+        loss = loss_func(batch_outputs[0], b_output_ids)
 
         # Accumulate the training loss over all of the batches so that we can
         # calculate the average loss at the end. `loss` is a Tensor containing a
