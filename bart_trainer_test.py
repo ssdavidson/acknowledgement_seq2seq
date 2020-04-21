@@ -127,7 +127,7 @@ optimizer = AdamW(model.parameters(),
                 )
 
 # Number of training epochs (authors recommend between 2 and 4)
-epochs = 4
+epochs = 1
 
 # Total number of training steps is number of batches * number of epochs.
 total_steps = len(train_dataloader) * epochs
@@ -282,7 +282,7 @@ for epoch_i in range(0, epochs):
     #
     # # Put the model in evaluation mode--the dropout layers behave differently
     # # during evaluation.
-    # model.eval()
+    model.eval()
     #
     # # Tracking variables
     # eval_loss, eval_accuracy = 0, 0
@@ -336,5 +336,5 @@ for epoch_i in range(0, epochs):
 print("")
 print("Training complete!")
 print("Saving model")
-model.save_pretrained(sys.argv[2])
+model.module.save_pretrained(sys.argv[2])
 tokenizer.save_pretrained(sys.argv[2])
