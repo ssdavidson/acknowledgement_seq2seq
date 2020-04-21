@@ -94,7 +94,7 @@ validation_masks = torch.tensor(validation_masks)
 # For fine-tuning BERT on a specific task, the authors recommend a batch size of
 # 16 or 32.
 
-batch_size = 16
+batch_size = 8
 
 # Create the DataLoader for our training set.
 train_data = TensorDataset(train_inputs, train_masks, train_outputs)
@@ -230,13 +230,13 @@ for epoch_i in range(0, epochs):
                     attention_mask=b_input_mask)
 
         print("Batch_outputs:", batch_outputs[0].shape)
-        print("Batch_outputs 2:", batch_outputs[1].shape)
         print("Target:", b_output_ids.shape)
 
         # The call to `model` always returns a tuple, so we need to pull the
         # loss value out of the tuple.
 
         loss = loss_func(batch_outputs[0].view(-1, tokenizer.vocab_size), b_output_ids.view(-1))
+        print(loss)
 
         # Accumulate the training loss over all of the batches so that we can
         # calculate the average loss at the end. `loss` is a Tensor containing a
