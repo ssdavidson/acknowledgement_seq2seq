@@ -229,6 +229,9 @@ for epoch_i in range(0, epochs):
         batch_outputs = model(b_input_ids,
                     attention_mask=b_input_mask)
 
+        print("Batch_outputs:", batch_outputs.shape)
+        print("Target:", b_output_ids.shape)
+
         # The call to `model` always returns a tuple, so we need to pull the
         # loss value out of the tuple.
 
