@@ -189,8 +189,6 @@ for epoch_i in range(0, epochs):
     # vs. test (source: https://stackoverflow.com/questions/51433378/what-does-model-train-do-in-pytorch)
     model.train()
 
-    pad_id = tokenizer.convert_tokens_to_ids('<PAD>')
-
     # For each batch of training data...
     for step, batch in enumerate(train_dataloader):
 
@@ -233,7 +231,7 @@ for epoch_i in range(0, epochs):
 
         # The call to `model` always returns a tuple, so we need to pull the
         # loss value out of the tuple.
-        loss_func = nn.CrossEntropyLoss(ignore_index=pad_id)
+        loss_func = nn.CrossEntropyLoss(ignore_index=tokenizer.pad_token_id)
 
         loss = loss_func(batch_outputs, b_output_ids)
 
