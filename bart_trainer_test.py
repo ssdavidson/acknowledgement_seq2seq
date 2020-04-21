@@ -127,7 +127,7 @@ optimizer = AdamW(model.parameters(),
                 )
 
 # Number of training epochs (authors recommend between 2 and 4)
-epochs = 1
+epochs = 4
 
 # Total number of training steps is number of batches * number of epochs.
 total_steps = len(train_dataloader) * epochs
