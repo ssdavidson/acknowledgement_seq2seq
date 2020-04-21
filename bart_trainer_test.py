@@ -234,7 +234,7 @@ for epoch_i in range(0, epochs):
         # The call to `model` always returns a tuple, so we need to pull the
         # loss value out of the tuple.
 
-        loss = loss_func(batch_outputs[0].view(-1, tokenizer.vocab_size), b_output_ids.view(-1))
+        loss = loss_func(batch_outputs[0].view(-1, tokenizer.vocab_size - 1), b_output_ids.view(-1))
         print(loss)
 
         # Accumulate the training loss over all of the batches so that we can
