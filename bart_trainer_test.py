@@ -37,7 +37,7 @@ print(inputs)
 # Load the BERT tokenizer.
 print('Loading BART tokenizer...')
 #tokenizer = BertTokenizer.from_pretrained('bert-base-cased', do_lower_case=False)
-tokenizer = BartTokenizer.from_pretrained("bart-large")
+tokenizer = BartTokenizer.from_pretrained("bart-large-cnn")
 
 #encode inputs using BERT tokenizer
 input_ids = []
@@ -109,7 +109,7 @@ validation_dataloader = DataLoader(validation_data, sampler=validation_sampler, 
 # Load BertForSequenceClassification, the pretrained BERT model with a single
 # linear classification layer on top.
 model = BartForConditionalGeneration.from_pretrained(
-    "facebook/bart-large" # Use the 12-layer BERT model, with an uncased vocab.
+    "facebook/bart-large-cnn" # Use the 12-layer BERT model, with an uncased vocab.
 )
 
 if torch.cuda.device_count() > 1:
@@ -282,7 +282,7 @@ for epoch_i in range(0, epochs):
     #
     # # Put the model in evaluation mode--the dropout layers behave differently
     # # during evaluation.
-    model.eval()
+    # model.eval()
     #
     # # Tracking variables
     # eval_loss, eval_accuracy = 0, 0
