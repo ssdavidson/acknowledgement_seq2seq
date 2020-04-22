@@ -337,13 +337,13 @@ for epoch_i in range(0, epochs):
 
         #loss = loss_func(batch_logits[0].view(-1, 50264), b_output_ids.view(-1))
 
-        target_mask = torch.ones_like(b_output_ids.view(-1)).float()
+        target_mask = torch.ones_like(b_output_ids[:, 1:].contiguous()).float()
 
         # The call to `model` always returns a tuple, so we need to pull the
         # loss value out of the tuple.
 
-        loss = loss_func(batch_outputs[0].view(-1, tokenizer.vocab_size - 1), b_output_ids.view(-1), target_mask, label_smoothing=0.1, reduce="batch")
-
+        #loss = loss_func(batch_outputs[0].view(-1), b_output_ids.view(-1), target_mask, label_smoothing=0.1, reduce="batch")
+        loss = loss_func(batch_outputs[0][:, :-1].contiguous(), b_output_ids[:, 1:].contiguous(), target_mask, label_smoothing=0.1, reduce="batch")
         print(loss)
 
         total_val_loss += loss
