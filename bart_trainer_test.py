@@ -319,7 +319,7 @@ for epoch_i in range(0, epochs):
                         attention_mask=b_input_mask,
                         num_beams=4,
                         length_penalty=2.0,
-                        #max_length=128,  # +2 from original because we start at step=1 and stop before max_length
+                        max_length=128,  # +2 from original because we start at step=1 and stop before max_length
                         #min_length=28,  # +1 from original because we start at step=1
                         no_repeat_ngram_size=3,
                         repetition_penalty = 10,
