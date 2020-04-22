@@ -45,8 +45,8 @@ input_ids = []
 output_ids = []
 
 for in_data, output in zip(inputs, outputs):
-    print(in_data)
-    print(output)
+    #print(in_data)
+    #print(output)
     encoded_input = tokenizer.encode(in_data, add_special_tokens = True, max_length=256,pad_to_max_length=True)
     encoded_output = tokenizer.encode(output, add_special_tokens = True, max_length=256,pad_to_max_length=True)
     input_ids.append(encoded_input)
@@ -243,7 +243,7 @@ for epoch_i in range(0, epochs):
 
         #loss = loss_func(batch_outputs[0].view(-1), b_output_ids.view(-1), target_mask, label_smoothing=0.1, reduce="batch")
         loss = loss_func(batch_outputs[0][:, :-1].contiguous(), b_output_ids[:, 1:].contiguous(), target_mask, label_smoothing=0.1, reduce="batch")
-        print(loss)
+        #print(loss)
 
         # Accumulate the training loss over all of the batches so that we can
         # calculate the average loss at the end. `loss` is a Tensor containing a
