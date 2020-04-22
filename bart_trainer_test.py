@@ -236,7 +236,7 @@ for epoch_i in range(0, epochs):
         print("Target: ", b_output_ids.shape)
         print("Vocab: ", tokenizer.vocab_size)
 
-        target_mask = torch.ones_like(b_output_ids.view(-1)).float()
+        target_mask = torch.ones_like(b_output_ids[:, 1:].contiguous()).float()
 
         # The call to `model` always returns a tuple, so we need to pull the
         # loss value out of the tuple.
