@@ -316,7 +316,7 @@ for epoch_i in range(0, epochs):
                         min_length=28,  # +1 from original because we start at step=1
                         no_repeat_ngram_size=3,
                         early_stopping=True,
-                        decoder_start_token_id=model.config.eos_token_id,
+                        decoder_start_token_id=model.module.config.eos_token_id,
                     )
 
         # Get the "logits" output by the model. The "logits" are the output
