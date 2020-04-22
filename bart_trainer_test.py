@@ -308,13 +308,21 @@ for epoch_i in range(0, epochs):
             # differentiates sentence 1 and 2 in 2-sentence tasks.
             # The documentation for this `model` function is here:
             # https://huggingface.co/transformers/v2.2.0/model_doc/bert.html#transformers.BertForSequenceClassification
-            batch_outputs = model(b_input_ids,
-                        attention_mask=b_input_mask)
+            batch_outputs = model.generate(input_ids=b_input_ids,
+                        attention_mask=b_input_mask,
+                        num_beams=4,
+                        length_penalty=2.0,
+                        max_length=142,  # +2 from original because we start at step=1 and stop before max_length
+                        min_length=28,  # +1 from original because we start at step=1
+                        no_repeat_ngram_size=3,
+                        early_stopping=True,
+                        decoder_start_token_id=model.config.eos_token_id,
+                    ))
 
         # Get the "logits" output by the model. The "logits" are the output
         # values prior to applying an activation function like the softmax.
 
-        loss = loss_func(batch_outputs[0].view(-1, tokenizer.vocab_size - 1), b_output_ids.view(-1))
+        loss = loss_func(batch_outputs.view(-1, tokenizer.vocab_size - 1), b_output_ids.view(-1))
         print(loss)
 
         total_val_loss += loss
