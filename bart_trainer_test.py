@@ -97,7 +97,7 @@ validation_masks = torch.tensor(validation_masks)
 # For fine-tuning BERT on a specific task, the authors recommend a batch size of
 # 16 or 32.
 
-batch_size = 4
+batch_size = 8
 
 # Create the DataLoader for our training set.
 train_data = TensorDataset(train_inputs, train_masks, train_outputs)
@@ -198,7 +198,7 @@ for epoch_i in range(0, epochs):
     for step, batch in enumerate(train_dataloader):
 
         # Progress update every 40 batches.
-        if step % 40 == 0 and not step == 0:
+        if step % 100 == 0 and not step == 0:
             # Calculate elapsed time in minutes.
             elapsed = format_time(time.time() - t0)
 
@@ -232,9 +232,9 @@ for epoch_i in range(0, epochs):
         batch_outputs = model(b_input_ids,
                     attention_mask=b_input_mask)
 
-        print("Batch_outputs: ", batch_outputs[0].shape)
-        print("Target: ", b_output_ids.shape)
-        print("Vocab: ", tokenizer.vocab_size)
+        #print("Batch_outputs: ", batch_outputs[0].shape)
+        #print("Target: ", b_output_ids.shape)
+        #print("Vocab: ", tokenizer.vocab_size)
 
         target_mask = torch.ones_like(b_output_ids[:, 1:].contiguous()).float()
 
@@ -333,8 +333,8 @@ for epoch_i in range(0, epochs):
         # Get the "logits" output by the model. The "logits" are the output
         # values prior to applying an activation function like the softmax.
 
-        print("batch_outputs:", batch_outputs.shape)
-        print("b_output_ids:", b_output_ids.shape)
+        #print("batch_outputs:", batch_outputs.shape)
+        #print("b_output_ids:", b_output_ids.shape)
 
         #loss = loss_func(batch_logits[0].view(-1, 50264), b_output_ids.view(-1))
 
@@ -345,7 +345,7 @@ for epoch_i in range(0, epochs):
 
         #loss = loss_func(batch_outputs[0].view(-1), b_output_ids.view(-1), target_mask, label_smoothing=0.1, reduce="batch")
         loss = loss_func(batch_logits[0][:, :-1].contiguous(), b_output_ids[:, 1:].contiguous(), target_mask, label_smoothing=0.1, reduce="batch")
-        print(loss)
+        #print(loss)
 
         total_val_loss += loss
 
