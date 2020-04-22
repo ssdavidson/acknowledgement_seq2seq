@@ -312,12 +312,15 @@ for epoch_i in range(0, epochs):
                         attention_mask=b_input_mask,
                         num_beams=4,
                         length_penalty=2.0,
-                        max_length=142,  # +2 from original because we start at step=1 and stop before max_length
+                        max_length=128,  # +2 from original because we start at step=1 and stop before max_length
                         min_length=28,  # +1 from original because we start at step=1
                         no_repeat_ngram_size=3,
                         early_stopping=True,
                         decoder_start_token_id=model.module.config.eos_token_id,
                     )
+
+            batch_logits = model(b_input_ids,
+                        attention_mask=b_input_mask)
 
         # Get the "logits" output by the model. The "logits" are the output
         # values prior to applying an activation function like the softmax.
@@ -325,7 +328,7 @@ for epoch_i in range(0, epochs):
         print("batch_outputs:", batch_outputs.shape)
         print("b_output_ids:", b_output_ids.shape)
 
-        loss = loss_func(batch_outputs.view(-1), b_output_ids.view(-1))
+        loss = loss_func(batch_logits.view(-1, 50264), b_output_ids.view(-1))
         print(loss)
 
         total_val_loss += loss
