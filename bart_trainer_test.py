@@ -323,10 +323,9 @@ for epoch_i in range(0, epochs):
         # values prior to applying an activation function like the softmax.
 
         print("batch_outputs:", batch_outputs.shape)
-        print("batch_outputs[0]:", batch_outputs[0].shape)
         print("b_output_ids:", b_output_ids.shape)
 
-        loss = loss_func(batch_outputs.view(-1, tokenizer.vocab_size - 1), b_output_ids.view(-1))
+        loss = loss_func(batch_outputs.view(-1), b_output_ids.view(-1))
         print(loss)
 
         total_val_loss += loss
