@@ -242,7 +242,7 @@ for epoch_i in range(0, epochs):
         # loss value out of the tuple.
 
         #loss = loss_func(batch_outputs[0].view(-1), b_output_ids.view(-1), target_mask, label_smoothing=0.1, reduce="batch")
-        loss = loss_func(batch_outputs[0][:, :-1].contiguous(), b_output_ids[:, :-1].contiguous(), target_mask, label_smoothing=0.1, reduce="batch")
+        loss = loss_func(batch_outputs[0][:, :-1].contiguous(), b_output_ids[:, 1:].contiguous(), target_mask, label_smoothing=0.1, reduce="batch")
         print(loss)
 
         # Accumulate the training loss over all of the batches so that we can
