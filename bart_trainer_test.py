@@ -308,7 +308,7 @@ for epoch_i in range(0, epochs):
             # differentiates sentence 1 and 2 in 2-sentence tasks.
             # The documentation for this `model` function is here:
             # https://huggingface.co/transformers/v2.2.0/model_doc/bert.html#transformers.BertForSequenceClassification
-            batch_outputs = model.generate(input_ids=b_input_ids,
+            batch_outputs = model.module.generate(input_ids=b_input_ids,
                         attention_mask=b_input_mask,
                         num_beams=4,
                         length_penalty=2.0,
@@ -345,7 +345,7 @@ for epoch_i in range(0, epochs):
         print(dec)
 
     # Report the final accuracy for this validation run.
-    print("  Loss: {0:.2f}".format(total_val_loss / len(train_dataloader)))
+    print("  Loss: {0:.2f}".format(total_val_loss / len(validation_dataloader)))
     print("  Validation took: {:}".format(format_time(time.time() - t0)))
 
 print("")
