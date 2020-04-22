@@ -127,7 +127,7 @@ optimizer = AdamW(model.parameters(),
                 )
 
 # Number of training epochs (authors recommend between 2 and 4)
-epochs = 4
+epochs = 2
 
 # Total number of training steps is number of batches * number of epochs.
 total_steps = len(train_dataloader) * epochs
@@ -181,6 +181,7 @@ for epoch_i in range(0, epochs):
 
     # Reset the total loss for this epoch.
     total_loss = 0
+    total_val_loss = 0
     loss_func = nn.CrossEntropyLoss(ignore_index=tokenizer.pad_token_id)
 
     # Put the model into training mode. Don't be mislead--the call to
@@ -268,69 +269,76 @@ for epoch_i in range(0, epochs):
     print("  Average training loss: {0:.2f}".format(avg_train_loss))
     print("  Training epcoh took: {:}".format(format_time(time.time() - t0)))
 
-    # # ========================================
-    # #               Validation
-    # # ========================================
-    # # After the completion of each training epoch, measure our performance on
-    # # our validation set.
-    #
-    # print("")
-    # print("Running Validation...")
-    #
-    # t0 = time.time()
-    #
-    # # Put the model in evaluation mode--the dropout layers behave differently
-    # # during evaluation.
-    # model.eval()
-    #
-    # # Tracking variables
-    # eval_loss, eval_accuracy = 0, 0
-    # nb_eval_steps, nb_eval_examples = 0, 0
-    #
-    # # Evaluate data for one epoch
-    # for batch in validation_dataloader:
-    #
-    #     # Add batch to GPU
-    #     batch = tuple(t.to(device) for t in batch)
-    #
-    #     # Unpack the inputs from our dataloader
-    #     b_input_ids, b_input_mask, b_output_ids = batch
-    #
-    #     # Telling the model not to compute or store gradients, saving memory and
-    #     # speeding up validation
-    #     with torch.no_grad():
-    #
-    #         # Forward pass, calculate logit predictions.
-    #         # This will return the logits rather than the loss because we have
-    #         # not provided labels.
-    #         # token_type_ids is the same as the "segment ids", which
-    #         # differentiates sentence 1 and 2 in 2-sentence tasks.
-    #         # The documentation for this `model` function is here:
-    #         # https://huggingface.co/transformers/v2.2.0/model_doc/bert.html#transformers.BertForSequenceClassification
-    #         outputs = model(b_input_ids,
-    #                         token_type_ids=None,
-    #                         attention_mask=b_input_mask)
-    #
-    #     # Get the "logits" output by the model. The "logits" are the output
-    #     # values prior to applying an activation function like the softmax.
-    #     logits = outputs[0]
-    #
-    #     # Move logits and labels to CPU
-    #     logits = logits.detach().cpu().numpy()
-    #     label_ids = b_output_ids.to('cpu').numpy()
-    #
-    #     # Calculate the accuracy for this batch of test sentences.
-    #     tmp_eval_accuracy = flat_accuracy(logits, label_ids)
-    #
-    #     # Accumulate the total accuracy.
-    #     eval_accuracy += tmp_eval_accuracy
-    #
-    #     # Track the number of batches
-    #     nb_eval_steps += 1
-    #
-    # # Report the final accuracy for this validation run.
-    # print("  Accuracy: {0:.2f}".format(eval_accuracy/nb_eval_steps))
-    # print("  Validation took: {:}".format(format_time(time.time() - t0)))
+    # ========================================
+    #               Validation
+    # ========================================
+    # After the completion of each training epoch, measure our performance on
+    # our validation set.
+
+    print("")
+    print("Running Validation...")
+
+    t0 = time.time()
+
+    # Put the model in evaluation mode--the dropout layers behave differently
+    # during evaluation.
+    model.eval()
+
+    # Tracking variables
+    eval_loss, eval_accuracy = 0, 0
+    nb_eval_steps, nb_eval_examples = 0, 0
+
+    # Evaluate data for one epoch
+    for batch in validation_dataloader:
+
+        # Add batch to GPU
+        batch = tuple(t.to(device) for t in batch)
+
+        # Unpack the inputs from our dataloader
+        b_input_ids, b_input_mask, b_output_ids = batch
+
+        # Telling the model not to compute or store gradients, saving memory and
+        # speeding up validation
+        with torch.no_grad():
+
+            # Forward pass, calculate logit predictions.
+            # This will return the logits rather than the loss because we have
+            # not provided labels.
+            # token_type_ids is the same as the "segment ids", which
+            # differentiates sentence 1 and 2 in 2-sentence tasks.
+            # The documentation for this `model` function is here:
+            # https://huggingface.co/transformers/v2.2.0/model_doc/bert.html#transformers.BertForSequenceClassification
+            batch_outputs = model(b_input_ids,
+                        attention_mask=b_input_mask)
+
+        # Get the "logits" output by the model. The "logits" are the output
+        # values prior to applying an activation function like the softmax.
+
+        loss = loss_func(batch_outputs[0].view(-1, tokenizer.vocab_size - 1), b_output_ids.view(-1))
+        print(loss)
+
+        total_val_loss += loss
+
+        # logits = outputs[0]
+        #
+        # # Move logits and labels to CPU
+        # logits = logits.detach().cpu().numpy()
+        # label_ids = b_output_ids.to('cpu').numpy()
+        #
+        # # Calculate the accuracy for this batch of test sentences.
+        # tmp_eval_accuracy = flat_accuracy(logits, label_ids)
+        #
+        # # Accumulate the total accuracy.
+        # eval_accuracy += tmp_eval_accuracy
+        #
+        # Track the number of batches
+        nb_eval_steps += 1
+        dec = [tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=False) for g in batch_outputs]
+        print(dec)
+
+    # Report the final accuracy for this validation run.
+    print("  Loss: {0:.2f}".format(total_val_loss / len(train_dataloader)))
+    print("  Validation took: {:}".format(format_time(time.time() - t0)))
 
 print("")
 print("Training complete!")
