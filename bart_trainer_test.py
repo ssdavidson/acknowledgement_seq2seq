@@ -11,6 +11,7 @@ from transformers import get_linear_schedule_with_warmup
 import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
+from SequenceCrossEntropyLoss import SequenceCrossEntropyLoss
 
 # If there's a GPU available...
 if torch.cuda.is_available():
@@ -44,6 +45,8 @@ input_ids = []
 output_ids = []
 
 for in_data, output in zip(inputs, outputs):
+    print(in_data)
+    print(output)
     encoded_input = tokenizer.encode(in_data, add_special_tokens = True, max_length=256,pad_to_max_length=True)
     encoded_output = tokenizer.encode(output, add_special_tokens = True, max_length=256,pad_to_max_length=True)
     input_ids.append(encoded_input)
@@ -127,7 +130,7 @@ optimizer = AdamW(model.parameters(),
                 )
 
 # Number of training epochs (authors recommend between 2 and 4)
-epochs = 2
+epochs = 10
 
 # Total number of training steps is number of batches * number of epochs.
 total_steps = len(train_dataloader) * epochs
@@ -182,7 +185,8 @@ for epoch_i in range(0, epochs):
     # Reset the total loss for this epoch.
     total_loss = 0
     total_val_loss = 0
-    loss_func = nn.CrossEntropyLoss(ignore_index=tokenizer.pad_token_id)
+#    loss_func = nn.CrossEntropyLoss(ignore_index=tokenizer.pad_token_id)
+    loss_func = SequenceCrossEntropyLoss()
 
     # Put the model into training mode. Don't be mislead--the call to
     # `train` just changes the *mode*, it doesn't *perform* the training.
@@ -232,10 +236,12 @@ for epoch_i in range(0, epochs):
         print("Target: ", b_output_ids.shape)
         print("Vocab: ", tokenizer.vocab_size)
 
+        target_mask = torch.ones_like(b_output_ids.view(-1)).float()
+
         # The call to `model` always returns a tuple, so we need to pull the
         # loss value out of the tuple.
 
-        loss = loss_func(batch_outputs[0].view(-1, tokenizer.vocab_size - 1), b_output_ids.view(-1))
+        loss = loss_func(batch_outputs[0].view(-1, tokenizer.vocab_size - 1), b_output_ids.view(-1), target_mask, label_smoothing=0.1, reduce="batch")
         print(loss)
 
         # Accumulate the training loss over all of the batches so that we can
@@ -328,7 +334,15 @@ for epoch_i in range(0, epochs):
         print("batch_outputs:", batch_outputs.shape)
         print("b_output_ids:", b_output_ids.shape)
 
-        loss = loss_func(batch_logits[0].view(-1, 50264), b_output_ids.view(-1))
+        #loss = loss_func(batch_logits[0].view(-1, 50264), b_output_ids.view(-1))
+
+        target_mask = torch.ones_like(b_output_ids.view(-1)).float()
+
+        # The call to `model` always returns a tuple, so we need to pull the
+        # loss value out of the tuple.
+
+        loss = loss_func(batch_outputs[0].view(-1, tokenizer.vocab_size - 1), b_output_ids.view(-1), target_mask, label_smoothing=0.1, reduce="batch")
+
         print(loss)
 
         total_val_loss += loss
