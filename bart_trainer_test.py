@@ -315,16 +315,16 @@ for epoch_i in range(0, epochs):
             # differentiates sentence 1 and 2 in 2-sentence tasks.
             # The documentation for this `model` function is here:
             # https://huggingface.co/transformers/v2.2.0/model_doc/bert.html#transformers.BertForSequenceClassification
-#            batch_outputs = model.module.generate(input_ids=b_input_ids,
-#                        #attention_mask=b_input_mask,
-#                        num_beams=4,
-#                        length_penalty=2.0,
-#                        max_length=20,  # +2 from original because we start at step=1 and stop before max_length
-#                        min_length=4,  # +1 from original because we start at step=1
-#                        no_repeat_ngram_size=3,
-#                        repetition_penalty=2,
-#                        early_stopping=True
-#                    )
+            batch_outputs = model.module.generate(input_ids=b_input_ids,
+                        #attention_mask=b_input_mask,
+                        num_beams=4,
+                        length_penalty=2.0,
+                        max_length=20,  # +2 from original because we start at step=1 and stop before max_length
+                        min_length=4,  # +1 from original because we start at step=1
+                        no_repeat_ngram_size=3,
+                        repetition_penalty=2,
+                        early_stopping=True
+                    )
 
             batch_logits = model(b_input_ids,
                         attention_mask=b_input_mask)
@@ -363,9 +363,9 @@ for epoch_i in range(0, epochs):
         # Track the number of batches
         nb_eval_steps += 1
         #testing - check what the decoder does with orig inputs
-#        in_dec = [tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=False) for g in b_input_ids]
-#        dec = [tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=False) for g in batch_outputs]
-#        print([(intext,outtext) for intext, outtext in zip(in_dec,dec)])
+        in_dec = [tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=False) for g in b_input_ids]
+        dec = [tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=False) for g in batch_outputs]
+        print([(intext,outtext) for intext, outtext in zip(in_dec,dec)])
 
     # Report the final accuracy for this validation run.
     print("  Loss: {0:.2f}".format(total_val_loss / len(validation_dataloader)))
