@@ -323,7 +323,8 @@ for epoch_i in range(0, epochs):
                         min_length=4,  # +1 from original because we start at step=1
                         no_repeat_ngram_size=3,
                         repetition_penalty = 2,
-                        early_stopping=True
+                        early_stopping=True,
+                        use_cache = False
                     )
 
             batch_logits = model(b_input_ids,
@@ -362,8 +363,10 @@ for epoch_i in range(0, epochs):
         #
         # Track the number of batches
         nb_eval_steps += 1
+        #testing - check what the decoder does with orig inputs
+        in_dec = [tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=False) for g in b_input_ids]
         dec = [tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=False) for g in batch_outputs]
-        print(dec)
+        print([(intext,outtext) for intext, outtext in zip(in_dec,dec)])
 
     # Report the final accuracy for this validation run.
     print("  Loss: {0:.2f}".format(total_val_loss / len(validation_dataloader)))
