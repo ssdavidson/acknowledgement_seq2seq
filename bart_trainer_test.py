@@ -44,25 +44,28 @@ tokenizer = BartTokenizer.from_pretrained("bart-large-cnn")
 input_ids = []
 output_ids = []
 
+#input_ids = tokenizer.batch_encode_plus(inputs, max_length=1024, return_tensors='pt')
+#output_ids = tokenizer.batch_encode_plus(outputs, max_length=1024, return_tensors='pt')
+
 for in_data, output in zip(inputs, outputs):
-    #print(in_data)
-    #print(output)
-    encoded_input = tokenizer.encode(in_data, add_special_tokens = True, max_length=256,pad_to_max_length=True)
-    encoded_output = tokenizer.encode(output, add_special_tokens = True, max_length=256,pad_to_max_length=True)
-    input_ids.append(encoded_input)
-    output_ids.append(encoded_output)
+     #print(in_data)
+     #print(output)
+     encoded_input = tokenizer.encode(in_data, add_special_tokens = True, max_length=256,pad_to_max_length=True)
+     encoded_output = tokenizer.encode(output, add_special_tokens = True, max_length=256,pad_to_max_length=True)
+     input_ids.append(encoded_input)
+     output_ids.append(encoded_output)
 
 #add padding to max len
-#def pad_input(input_ids):
-#    MAX_LEN = 256
-#    print('\nPadding/truncating all sentences to %d values...' % MAX_LEN)
-#    print('\nPadding token: "{:}", ID: {:}'.format(tokenizer.pad_token, tokenizer.pad_token_id))
-#    input_ids = pad_sequences(input_ids, maxlen=MAX_LEN, dtype="long",
-#                          value=0, truncating="post", padding="post")
-#    print('\nDone.')
-#    return input_ids
+def pad_input(input_ids):
+    MAX_LEN = 256
+    print('\nPadding/truncating all sentences to %d values...' % MAX_LEN)
+    print('\nPadding token: "{:}", ID: {:}'.format(tokenizer.pad_token, tokenizer.pad_token_id))
+    input_ids = pad_sequences(input_ids, maxlen=MAX_LEN, dtype="long",
+                          value=0, truncating="post", padding="post")
+    print('\nDone.')
+    return input_ids
 
-#input_ids = pad_input(input_ids)
+input_ids = pad_input(input_ids)
 
 
 #define attention masks: if 0 it's a PAD, set to 0; else set to 1
@@ -323,7 +326,8 @@ for epoch_i in range(0, epochs):
                         min_length=4,  # +1 from original because we start at step=1
                         no_repeat_ngram_size=3,
                         repetition_penalty=2,
-                        early_stopping=True
+                        early_stopping=True,
+                        use_cache = False
                     )
 
             batch_logits = model(b_input_ids,
