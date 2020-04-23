@@ -323,8 +323,7 @@ for epoch_i in range(0, epochs):
                         min_length=4,  # +1 from original because we start at step=1
                         no_repeat_ngram_size=3,
                         repetition_penalty=2,
-                        early_stopping=True,
-                        use_cache=False
+                        early_stopping=True
                     )
 
             batch_logits = model(b_input_ids,
