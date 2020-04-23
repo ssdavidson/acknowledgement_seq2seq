@@ -317,13 +317,13 @@ for epoch_i in range(0, epochs):
             # https://huggingface.co/transformers/v2.2.0/model_doc/bert.html#transformers.BertForSequenceClassification
             batch_outputs = model.module.generate(input_ids=b_input_ids,
                         attention_mask=b_input_mask,
-                        #num_beams=4,
+                        num_beams=4,
                         length_penalty=2.0,
-                        #max_length=28,  # +2 from original because we start at step=1 and stop before max_length
-                        #min_length=28,  # +1 from original because we start at step=1
+                        max_length=25,  # +2 from original because we start at step=1 and stop before max_length
+                        min_length=5,  # +1 from original because we start at step=1
                         no_repeat_ngram_size=3,
-                        repetition_penalty = 2
-                        #early_stopping=True
+                        repetition_penalty = 2,
+                        early_stopping=True
                     )
 
             batch_logits = model(b_input_ids,
