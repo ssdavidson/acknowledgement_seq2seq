@@ -324,7 +324,7 @@ for epoch_i in range(0, epochs):
                         no_repeat_ngram_size=3,
                         repetition_penalty=2,
                         early_stopping=True,
-                        #use_cache=False
+                        use_cache=False
                     )
 
             batch_logits = model(b_input_ids,
