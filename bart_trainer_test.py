@@ -38,7 +38,7 @@ print(inputs)
 # Load the BERT tokenizer.
 print('Loading BART tokenizer...')
 #tokenizer = BertTokenizer.from_pretrained('bert-base-cased', do_lower_case=False)
-tokenizer = BartTokenizer.from_pretrained("bart-large-cnn")
+tokenizer = BartTokenizer.from_pretrained("bart-large", add_prefix_space=True)
 
 #encode inputs using BERT tokenizer
 input_ids = []
@@ -57,7 +57,7 @@ for in_data, output in zip(inputs, outputs):
 
 #add padding to max len
 def pad_input(input_ids):
-    MAX_LEN = 256
+    MAX_LEN = 128
     print('\nPadding/truncating all sentences to %d values...' % MAX_LEN)
     print('\nPadding token: "{:}", ID: {:}'.format(tokenizer.pad_token, tokenizer.pad_token_id))
     input_ids = pad_sequences(input_ids, maxlen=MAX_LEN, dtype="long",
@@ -66,6 +66,8 @@ def pad_input(input_ids):
     return input_ids
 
 input_ids = pad_input(input_ids)
+
+print(input_ids)
 
 
 #define attention masks: if 0 it's a PAD, set to 0; else set to 1
@@ -115,7 +117,7 @@ validation_dataloader = DataLoader(validation_data, sampler=validation_sampler, 
 # Load BertForSequenceClassification, the pretrained BERT model with a single
 # linear classification layer on top.
 model = BartForConditionalGeneration.from_pretrained(
-    "facebook/bart-large-cnn" # Use the 12-layer BERT model, with an uncased vocab.
+    "facebook/bart-large" # Use the 12-layer BERT model, with an uncased vocab.
 )
 
 if torch.cuda.device_count() > 1:
@@ -196,6 +198,11 @@ for epoch_i in range(0, epochs):
     # `dropout` and `batchnorm` layers behave differently during training
     # vs. test (source: https://stackoverflow.com/questions/51433378/what-does-model-train-do-in-pytorch)
     model.train()
+
+    model.bart.model.encoder.requires_grad = False
+    model.bart.model.decoder.embed_tokens.requires_grad = False
+    model.bart.model.decoder.embed_positions.requires_grad = False
+    model.bart.model.decoder.layers.requires_grad = False
 
     # For each batch of training data...
     for step, batch in enumerate(train_dataloader):
