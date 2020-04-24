@@ -34,8 +34,8 @@ def generate_summaries(
                 attention_mask=dct["attention_mask"].to(device),
                 num_beams=4,
                 length_penalty=2.0,
-                max_length=max_length + 2,  # +2 from original because we start at step=1 and stop before max_length
-                min_length=min_length + 1,  # +1 from original because we start at step=1
+                max_length=28,  # +2 from original because we start at step=1 and stop before max_length
+                #min_length=min_length + 1,  # +1 from original because we start at step=1
                 no_repeat_ngram_size=3,
                 early_stopping=True,
                 decoder_start_token_id=model.config.eos_token_id,
