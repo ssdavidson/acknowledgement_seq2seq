@@ -45,6 +45,7 @@ def generate_summaries(
                 fout.write(hypothesis + "\n")
                 fout.flush()
         except:
+            print('error')
             continue
 
 
