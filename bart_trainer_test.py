@@ -66,7 +66,7 @@ def pad_input(input_ids):
     return input_ids
 
 input_ids = pad_input(input_ids)
-output_ids = pad_output(output_ids)
+output_ids = pad_input(output_ids)
 
 #define attention masks: if 0 it's a PAD, set to 0; else set to 1
 attention_masks = []
