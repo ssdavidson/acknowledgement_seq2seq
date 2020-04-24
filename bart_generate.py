@@ -27,7 +27,7 @@ def generate_summaries(
     min_length = 55
 
     for batch in tqdm(list(chunks(examples, batch_size))):
-        dct = tokenizer.batch_encode_plus(batch, max_length=1024, return_tensors="pt", pad_to_max_length=True)
+        dct = tokenizer.batch_encode_plus(batch, max_length=512, return_tensors="pt", pad_to_max_length=True)
         summaries = model.generate(
             input_ids=dct["input_ids"].to(device),
             attention_mask=dct["attention_mask"].to(device),
@@ -41,8 +41,10 @@ def generate_summaries(
         #    decoder_start_token_id=model.config.eos_token_id,
         )
         dec = [tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=False) for g in summaries]
-        for hypothesis in dec:
-            fout.write(hypothesis + "\n")
+        in_ids = dct["input_ids"].to(device)
+        in_dec = [tokenizer.decode(id, skip_special_tokens=True, clean_up_tokenization_spaces=False) for id in in_ids]
+        for input, hypothesis in zip(in_dec, dec):
+            fout.write(input + ' ||| ' + hypothesis + "\n")
             fout.flush()
 
 
