@@ -200,12 +200,13 @@ for epoch_i in range(0, epochs):
     model.train()
 
     for name, param in model.module.named_parameters():
-        print(name,param)
+        if "layer_norm" not in name:
+            param.requires_grad = False
 
-    model.module.bart.model.encoder.requires_grad = False
-    model.module.bart.model.decoder.embed_tokens.requires_grad = False
-    model.module.bart.model.decoder.embed_positions.requires_grad = False
-    model.module.bart.model.decoder.layers.requires_grad = False
+#    model.module.bart.model.encoder.requires_grad = False
+#    model.module.bart.model.decoder.embed_tokens.requires_grad = False
+#    model.module.bart.model.decoder.embed_positions.requires_grad = False
+#    model.module.bart.model.decoder.layers.requires_grad = False
 
     # For each batch of training data...
     for step, batch in enumerate(train_dataloader):
