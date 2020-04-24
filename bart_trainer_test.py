@@ -199,10 +199,10 @@ for epoch_i in range(0, epochs):
     # vs. test (source: https://stackoverflow.com/questions/51433378/what-does-model-train-do-in-pytorch)
     model.train()
 
-    model.bart.model.encoder.requires_grad = False
-    model.bart.model.decoder.embed_tokens.requires_grad = False
-    model.bart.model.decoder.embed_positions.requires_grad = False
-    model.bart.model.decoder.layers.requires_grad = False
+    model.module.bart.model.encoder.requires_grad = False
+    model.module.bart.model.decoder.embed_tokens.requires_grad = False
+    model.module.bart.model.decoder.embed_positions.requires_grad = False
+    model.module.bart.model.decoder.layers.requires_grad = False
 
     # For each batch of training data...
     for step, batch in enumerate(train_dataloader):
