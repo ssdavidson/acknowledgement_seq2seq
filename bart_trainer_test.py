@@ -392,6 +392,7 @@ for epoch_i in range(0, epochs):
     print("  Validation took: {:}".format(format_time(time.time() - t0)))
 
     if curr_loss < prev_val_loss:
+        prev_val_loss = curr_loss
         print("")
         #print("Training complete!")
         print("Saving model - epoch, ", epoch_i)
