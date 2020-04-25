@@ -38,7 +38,7 @@ print(inputs)
 # Load the BERT tokenizer.
 print('Loading BART tokenizer...')
 #tokenizer = BertTokenizer.from_pretrained('bert-base-cased', do_lower_case=False)
-tokenizer = BartTokenizer.from_pretrained("bart-large", add_prefix_space=True)
+tokenizer = BartTokenizer.from_pretrained("bart-large-cnn", add_prefix_space=True)
 
 #encode inputs using BERT tokenizer
 input_ids = []
@@ -115,7 +115,7 @@ validation_dataloader = DataLoader(validation_data, sampler=validation_sampler, 
 # Load BertForSequenceClassification, the pretrained BERT model with a single
 # linear classification layer on top.
 model = BartForConditionalGeneration.from_pretrained(
-    "facebook/bart-large" # Use the 12-layer BERT model, with an uncased vocab.
+    "facebook/bart-large-cnn" # Use the 12-layer BERT model, with an uncased vocab.
 )
 
 if torch.cuda.device_count() > 1:
@@ -168,6 +168,8 @@ torch.cuda.manual_seed_all(seed_val)
 
 # Store the average loss after each epoch so we can plot them.
 loss_values = []
+
+prev_val_loss = 100000000.0
 
 # For each epoch...
 for epoch_i in range(0, epochs):
@@ -381,11 +383,13 @@ for epoch_i in range(0, epochs):
         # print([(intext,outtext) for intext, outtext in zip(in_dec,dec)])
 
     # Report the final accuracy for this validation run.
+    curr_loss = total_val_loss / len(validation_dataloader
     print("  Loss: {0:.2f}".format(total_val_loss / len(validation_dataloader)))
     print("  Validation took: {:}".format(format_time(time.time() - t0)))
 
-print("")
-print("Training complete!")
-print("Saving model")
-model.module.save_pretrained(sys.argv[2])
-tokenizer.save_pretrained(sys.argv[2])
+    if curr_loss < prev_val_loss:
+        print("")
+        #print("Training complete!")
+        print("Saving model - epoch, ", epoch_i)
+        model.module.save_pretrained(sys.argv[2])
+        tokenizer.save_pretrained(sys.argv[2])

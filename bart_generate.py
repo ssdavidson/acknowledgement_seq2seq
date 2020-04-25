@@ -33,8 +33,8 @@ def generate_summaries(
             attention_mask=dct["attention_mask"].to(device),
             num_beams=4,
             length_penalty=3.0,
-        #    repetition_penalty = 10.0,
-            max_length=28,  # +2 from original because we start at step=1 and stop before max_length
+            repetition_penalty = 5.0,
+            max_length=25,  # +2 from original because we start at step=1 and stop before max_length
             #min_length=min_length + 1,  # +1 from original because we start at step=1
             no_repeat_ngram_size=3,
             early_stopping=True,
