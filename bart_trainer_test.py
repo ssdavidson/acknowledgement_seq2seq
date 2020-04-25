@@ -383,7 +383,7 @@ for epoch_i in range(0, epochs):
         # print([(intext,outtext) for intext, outtext in zip(in_dec,dec)])
 
     # Report the final accuracy for this validation run.
-    curr_loss = total_val_loss / len(validation_dataloader
+    curr_loss = total_val_loss / len(validation_dataloader)
     print("  Loss: {0:.2f}".format(total_val_loss / len(validation_dataloader)))
     print("  Validation took: {:}".format(format_time(time.time() - t0)))
 
