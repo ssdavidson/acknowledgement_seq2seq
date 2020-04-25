@@ -32,7 +32,7 @@ def generate_summaries(
             input_ids=dct["input_ids"].to(device),
             attention_mask=dct["attention_mask"].to(device),
             num_beams=4,
-            length_penalty=3.0,
+            length_penalty=10.0,
             repetition_penalty = 5.0,
             max_length=20,  # +2 from original because we start at step=1 and stop before max_length
             #min_length=min_length + 1,  # +1 from original because we start at step=1
