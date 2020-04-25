@@ -204,7 +204,7 @@ for epoch_i in range(0, epochs):
     #         param.requires_grad = False
 
     for name, param in model.module.named_parameters():
-        print(name, param)
+        print(name)
         # if "decoder" not in name:
         #     param.requires_grad = False
 
