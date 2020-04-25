@@ -199,9 +199,14 @@ for epoch_i in range(0, epochs):
     # vs. test (source: https://stackoverflow.com/questions/51433378/what-does-model-train-do-in-pytorch)
     model.train()
 
+    # for name, param in model.module.named_parameters():
+    #     if "layer_norm" not in name:
+    #         param.requires_grad = False
+
     for name, param in model.module.named_parameters():
-        if "layer_norm" not in name:
-            param.requires_grad = False
+        print(name, param)
+        # if "decoder" not in name:
+        #     param.requires_grad = False
 
 #    model.module.bart.model.encoder.requires_grad = False
 #    model.module.bart.model.decoder.embed_tokens.requires_grad = False
