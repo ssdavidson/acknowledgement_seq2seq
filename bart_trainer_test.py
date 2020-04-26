@@ -204,7 +204,7 @@ for epoch_i in range(0, epochs):
     #         param.requires_grad = False
 
     for name, param in model.module.named_parameters():
-        if "layernorm_embedding" not in name:
+        if "model.decoder.layers.11" not in name:
             param.requires_grad = False
 
 #    model.module.bart.model.encoder.requires_grad = False
