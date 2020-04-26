@@ -128,7 +128,7 @@ model.cuda()
 # Note: AdamW is a class from the huggingface library (as opposed to pytorch)
 # I believe the 'W' stands for 'Weight Decay fix"
 optimizer = AdamW(model.parameters(),
-                  lr = 5e-5, # args.learning_rate - default is 5e-5, our notebook had 2e-5
+                  lr = 1e-6, # args.learning_rate - default is 5e-5, our notebook had 2e-5
                   eps = 1e-8 # args.adam_epsilon  - default is 1e-8.
                 )
 
@@ -140,7 +140,7 @@ total_steps = len(train_dataloader) * epochs
 
 # Create the learning rate scheduler.
 scheduler = get_linear_schedule_with_warmup(optimizer,
-                                            num_warmup_steps = 0, # Default value in run_glue.py
+                                            num_warmup_steps = 600, # Default value in run_glue.py
                                             num_training_steps = total_steps)
 
 def flat_accuracy(preds, labels):
@@ -204,7 +204,7 @@ for epoch_i in range(0, epochs):
     #         param.requires_grad = False
 
     for name, param in model.module.named_parameters():
-        if "model.decoder.layers.11" not in name:
+        if "model.decoder" not in name:
             param.requires_grad = False
 
 #    model.module.bart.model.encoder.requires_grad = False
