@@ -395,6 +395,6 @@ for epoch_i in range(0, epochs):
         prev_val_loss = curr_loss
         print("")
         #print("Training complete!")
-        print("Saving model - epoch, ", epoch_i)
+        print("Saving model - epoch, ", epoch_i + 1)
         model.module.save_pretrained(sys.argv[2])
         tokenizer.save_pretrained(sys.argv[2])
