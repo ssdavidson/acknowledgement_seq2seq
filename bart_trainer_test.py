@@ -38,7 +38,7 @@ print(inputs)
 # Load the BERT tokenizer.
 print('Loading BART tokenizer...')
 #tokenizer = BertTokenizer.from_pretrained('bert-base-cased', do_lower_case=False)
-tokenizer = BartTokenizer.from_pretrained("bart-large-cnn", add_prefix_space=True)
+tokenizer = BartTokenizer.from_pretrained("bart-large", add_prefix_space=True)
 
 #encode inputs using BERT tokenizer
 input_ids = []
@@ -115,7 +115,7 @@ validation_dataloader = DataLoader(validation_data, sampler=validation_sampler, 
 # Load BertForSequenceClassification, the pretrained BERT model with a single
 # linear classification layer on top.
 model = BartForConditionalGeneration.from_pretrained(
-    "facebook/bart-large-cnn" # Use the 12-layer BERT model, with an uncased vocab.
+    "facebook/bart-large" # Use the 12-layer BERT model, with an uncased vocab.
 )
 
 if torch.cuda.device_count() > 1:
@@ -203,9 +203,9 @@ for epoch_i in range(0, epochs):
     #     if "layer_norm" not in name:
     #         param.requires_grad = False
 
-    for name, param in model.module.named_parameters():
-        if "model.decoder" not in name:
-            param.requires_grad = False
+    # for name, param in model.module.named_parameters():
+    #     if "model.decoder" not in name:
+    #         param.requires_grad = False
 
 #    model.module.bart.model.encoder.requires_grad = False
 #    model.module.bart.model.decoder.embed_tokens.requires_grad = False
