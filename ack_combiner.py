@@ -246,7 +246,7 @@ for epoch_i in range(0, epochs):
         # have provided the `labels`.
         # The documentation for this `model` function is here:
         # https://huggingface.co/transformers/v2.2.0/model_doc/bert.html#transformers.BertForSequenceClassification
-        batch_outputs = model(b_input_ids,
+        batch_outputs = model.decode(b_input_ids,
                     attention_mask=b_input_mask,
                     decoder_input_ids=b_input_ids)
 
