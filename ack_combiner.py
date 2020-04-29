@@ -60,7 +60,7 @@ for in_data, output in zip(inputs, outputs):
 def pad_input(input_ids):
     MAX_LEN = 128
     print('\nPadding/truncating all sentences to %d values...' % MAX_LEN)
-    print('\nPadding token: "{:}", ID: {:}'.format(input_tokenizer.pad_token, tokenizer.pad_token_id))
+    print('\nPadding token: "{:}", ID: {:}'.format(input_tokenizer.pad_token, input_tokenizer.pad_token_id))
     input_ids = pad_sequences(input_ids, maxlen=MAX_LEN, dtype="long",
                           value=0, truncating="post", padding="post")
     print('\nDone.')
