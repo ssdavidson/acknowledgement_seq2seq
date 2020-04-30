@@ -193,9 +193,9 @@ for epoch_i in range(0, epochs):
     #     if "layer_norm" not in name:
     #         param.requires_grad = False
 
-    for name, param in model.module.named_parameters():
-        if "model.decoder" not in name:
-            param.requires_grad = False
+    # for name, param in model.module.named_parameters():
+    #     if "model.decoder" not in name:
+    #         param.requires_grad = False
 
 #    model.module.bart.model.encoder.requires_grad = False
 #    model.module.bart.model.decoder.embed_tokens.requires_grad = False
