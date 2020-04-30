@@ -31,16 +31,16 @@ def generate_summaries(
         dct = tokenizer.batch_encode_plus(batch, max_length=128, return_tensors="pt", pad_to_max_length=True, add_special_tokens=True)
         summaries = model.generate(
             input_ids=dct["input_ids"].to(device),
-            # attention_mask=dct["attention_mask"].to(device),
-            # num_beams=4,
-            # length_penalty=10.0,
-            # repetition_penalty = 5.0,
-            # max_length=20,  # +2 from original because we start at step=1 and stop before max_length
-            # #min_length=min_length + 1,  # +1 from original because we start at step=1
-            # no_repeat_ngram_size=3,
-            # early_stopping=True,
-            decoder_start_token_id=model.config.decoder.eos_token_id
-        #    decoder_start_token_id=model.config.decoder.pad_token_id
+            attention_mask=dct["attention_mask"].to(device),
+            num_beams=4,
+            length_penalty=10.0,
+            repetition_penalty = 5.0,
+            max_length=20,  # +2 from original because we start at step=1 and stop before max_length
+            min_length=3,  # +1 from original because we start at step=1
+            no_repeat_ngram_size=3,
+            early_stopping=True,
+        #    decoder_start_token_id=model.config.decoder.eos_token_id
+            decoder_start_token_id=model.config.decoder.pad_token_id
         )
         dec = [tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=False) for g in summaries]
         in_ids = dct["input_ids"].to(device)
