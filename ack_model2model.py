@@ -60,7 +60,7 @@ for in_data, output in zip(inputs, outputs):
 #                           value=0, truncating="post", padding="post")
 #     print('\nDone.')
 #     return input_ids
-# 
+#
 # input_ids = pad_input(input_ids)
 # output_ids = pad_input(output_ids)
 
@@ -89,7 +89,9 @@ print("output: ", train_outputs.shape)
 validation_outputs = torch.tensor(validation_outputs)
 
 train_masks = torch.tensor(train_masks)
+print(train_masks)
 validation_masks = torch.tensor(validation_masks)
+print(validation_masks)
 
 # The DataLoader needs to know our batch size for training, so we specify it
 # here.
