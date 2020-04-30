@@ -24,6 +24,8 @@ def generate_summaries(
     model = EncoderDecoderModel.from_encoder_decoder_pretrained('bert-base-uncased', 'bert-base-uncased')
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
+    model.to(device)
+
 #    max_length = 140
 #    min_length = 55
 
