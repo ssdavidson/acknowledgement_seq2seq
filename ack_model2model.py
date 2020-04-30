@@ -337,8 +337,10 @@ for epoch_i in range(0, epochs):
             #             use_cache = False
             #         )
             #
-            batch_logits = model(b_input_ids,
-                        attention_mask=b_input_mask)
+            batch_logits = model(input_ids=b_input_ids,
+                        attention_mask=b_input_mask,
+                        decoder_input_ids=b_input_ids,
+                        decoder_attention_mask=b_input_mask)
 
         # Get the "logits" output by the model. The "logits" are the output
         # values prior to applying an activation function like the softmax.
