@@ -391,5 +391,4 @@ for epoch_i in range(0, epochs):
         #print("Training complete!")
         print("Saving model - epoch, ", epoch_i + 1)
         model.module.save_pretrained(sys.argv[2])
-        input_tokenizer.save_pretrained(sys.argv[2])
-        output_tokenizer.save_pretrained(sys.argv[2])
+        tokenizer.save_pretrained(sys.argv[2])
