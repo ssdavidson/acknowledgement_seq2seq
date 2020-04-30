@@ -240,8 +240,7 @@ for epoch_i in range(0, epochs):
         batch_outputs = model(input_ids=b_input_ids,
                     attention_mask=b_input_mask,
                     decoder_input_ids=b_input_ids,
-                    decoder_attention_mask=b_input_mask,
-                    decoder_lm_labels=b_output_ids)
+                    decoder_attention_mask=b_input_mask)
 
         #print("Batch_outputs: ", batch_outputs[0].shape)
         #print("Target: ", b_output_ids.shape)
