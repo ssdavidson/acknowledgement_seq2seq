@@ -1,4 +1,4 @@
-from transformers import BertTokenizer, AutoTokenizer, PreTrainedEncoderDecoder
+from transformers import BertTokenizer, AutoTokenizer, EncoderDecoderModer
 import load_data_test as load_data
 import torch, sys
 from tqdm import tqdm

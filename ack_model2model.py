@@ -1,6 +1,17 @@
-import torch
-from transformers import BertTokenizer, Model2Model
-import load_data
+import torch, sys
+from transformers import BertTokenizer, EncoderDecoderModel
+import load_data_test as load_data
+from tqdm import tqdm
+import sys, time, datetime, random
+from keras.preprocessing.sequence import pad_sequences
+from sklearn.model_selection import train_test_split
+from torch.utils.data import TensorDataset, DataLoader, RandomSampler, SequentialSampler
+from transformers import BertForSequenceClassification, AdamW, BertConfig
+from transformers import get_linear_schedule_with_warmup
+import numpy as np
+import torch.nn as nn
+import torch.nn.functional as F
+from SequenceCrossEntropyLoss import SequenceCrossEntropyLoss
 
 if torch.cuda.is_available():
 
@@ -23,7 +34,7 @@ inputs, outputs = load_data.get_data(sys.argv[1])
 print('Loading BERT tokenizer...')
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
-model = Model2Model.from_pretrained('bert-base-uncased')
+model = EncoderDecoderModel.from_encoder_decoder_pretrained('bert-base-uncased', 'bert-base-uncased')
 
 #encode inputs using BERT tokenizer
 input_ids = []
