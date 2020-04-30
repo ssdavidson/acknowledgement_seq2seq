@@ -21,7 +21,7 @@ def generate_summaries(
 ):
     fout = Path(out_file).open("w")
 #    model = EncoderDecoderModel.from_pretrained(model_name, output_past=True).to(device)
-    model = EncoderDecoderModel.from_pretrained(model_name, output_past=True).to(device)
+    model = EncoderDecoderModel.from_pretrained(model_name).to(device)
     tokenizer = BertTokenizer.from_pretrained(model_name)
 
 #    max_length = 140
