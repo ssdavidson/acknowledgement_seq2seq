@@ -27,7 +27,7 @@ def generate_summaries(
     min_length = 55
 
     for batch in tqdm(list(chunks(examples, batch_size))):
-        dct = tokenizer.batch_encode_plus(batch, max_length=512, return_tensors="pt")
+        dct = tokenizer.batch_encode_plus(batch, max_length=64, return_tensors="pt", pad_to_max_length=True)
         print(dct["input_ids"][0])
         print(dct["attention_mask"][0])
         summaries = model.generate(
