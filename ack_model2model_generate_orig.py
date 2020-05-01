@@ -31,6 +31,8 @@ def generate_summaries(
 
     for batch in tqdm(list(chunks(examples, batch_size))):
         dct = tokenizer.batch_encode_plus(batch, max_length=128, return_tensors="pt", pad_to_max_length=True, add_special_tokens=True)
+        print(dct["input_ids"][0])
+        print(dct["attention_mask"][0])
         summaries = model.generate(
             input_ids=dct["input_ids"].to(device),
             attention_mask=dct["attention_mask"].to(device),
@@ -72,7 +74,6 @@ def run_generate():
     args = parser.parse_args()
     tsv_in = csv.reader(open(args.source_path), delimiter = '\t')
     examples = [" " + row[0].rstrip() for row in tsv_in]
-    print(examples)
     generate_summaries(examples, args.output_path, args.model_name, batch_size=args.bs, device=args.device)
 
 
