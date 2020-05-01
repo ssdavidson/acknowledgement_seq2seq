@@ -41,8 +41,8 @@ def generate_summaries(
             min_length=3,  # +1 from original because we start at step=1
             no_repeat_ngram_size=3,
             early_stopping=True,
-        #    decoder_start_token_id=model.config.decoder.eos_token_id
-            decoder_start_token_id=model.config.decoder.pad_token_id
+            decoder_start_token_id=model.config.decoder.bos_token_id
+        #    decoder_start_token_id=model.config.decoder.pad_token_id
         )
         dec = [tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=False) for g in summaries]
         in_ids = dct["input_ids"].to(device)
@@ -67,7 +67,7 @@ def run_generate():
         "--device", type=str, required=False, default=DEFAULT_DEVICE, help="cuda, cuda:1, cpu etc.",
     )
     parser.add_argument(
-        "--bs", type=int, default=8, required=False, help="batch size: how many to summarize at a time",
+        "--bs", type=int, default=4, required=False, help="batch size: how many to summarize at a time",
     )
     args = parser.parse_args()
     tsv_in = csv.reader(open(args.source_path), delimiter = '\t')
